@@ -16,6 +16,10 @@ public class Card : MonoBehaviour
     public CardGame cardGame;
     public bool isMatched = false;
 
+    //카드 앞 뒷면 구분
+    public GameObject front;
+    public GameObject back;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     // Update is called once per frame
@@ -56,14 +60,21 @@ public class Card : MonoBehaviour
         }
         else
         {
-            cardGame.OnClickCard(this);
+            game.OnClickCard(this);
         }
     }
 
+    private CardGame game;
 
-    public void Flip(bool isFront)
+    public void SetGame(CardGame game)
     {
-        this.isFront = isFront;
+        this.game = game;
+    }
+
+    public void Flip(bool showFront)
+    {
+        front.SetActive(showFront);
+        back.SetActive(!showFront);
     }
 
     public void SetCardNumber(int newNumber)
@@ -80,7 +91,7 @@ public class Card : MonoBehaviour
 
     public void SetImage(Sprite sprite)
     {
-        GetComponent<Image>().sprite = sprite;
+        front.GetComponent<Image>().sprite = sprite;
     }
 
 

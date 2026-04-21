@@ -1,6 +1,8 @@
-using UnityEngine;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class CardGame : MonoBehaviour
 {
@@ -10,18 +12,63 @@ public class CardGame : MonoBehaviour
     private Card firstCard = null;
     private Card SecondCard = null;
     private bool isChecking = false;
+
+    public int pairCount = 0;
+    public GameObject cardPrefab;
+    public Transform cardParent;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        CreateCards();
+        SetupGrid();
         startGame();
+    }
+
+    void SetupGrid()
+    {
+        GridLayoutGroup grid = cardParent.GetComponent<GridLayoutGroup>();
+
+        int totalCardCount = pairCount * 2;
+
+        int column = Mathf.CeilToInt(Mathf.Sqrt(totalCardCount));
+
+        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        grid.constraintCount = column;
+    }
+
+    void CreateCards()
+    {
+        cards.Clear();
+
+        int totalCardCount = pairCount * 2;
+
+        for ( int i = 0; i < totalCardCount; i++)
+        {
+            GameObject obj = Instantiate(cardPrefab, cardParent);
+            Card card = obj.GetComponent<Card>();
+
+            cards.Add(card);
+
+            card.SetGame(this);
+        }
     }
 
     //카드 섞고 다 뒤집기
     void startGame()
     {
-        List<int> pairNumbers = GeneratePairNumbers(cards.Count);
+        int totalCardCount = pairCount * 2;
+        List<int> pairNumbers = GeneratePairNumbers(totalCardCount);
+
+        for(int i = 0; i < totalCardCount; ++i)
+        {
+            cards[i].SetCardNumber(pairNumbers[i]);
+            cards[i].SetImage(sprites[pairNumbers[i]]);
+            cards[i].Flip(false);
+        }
+
+        /*List<int> pairNumbers = GeneratePairNumbers(cards.Count);
         for (int i = 0; i < pairNumbers.Count; ++i)
         {
             cards[i].SetCardNumber(pairNumbers[i]);
@@ -35,6 +82,7 @@ public class CardGame : MonoBehaviour
         {
             cards[i].isFront = false;
         }
+        */
     }
 
     //카드 맞는지 체크
