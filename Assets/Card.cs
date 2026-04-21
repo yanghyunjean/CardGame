@@ -1,9 +1,12 @@
-using UnityEngine;
+using System.Globalization;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
+
     public float rotateY;
     public TextMeshProUGUI text;
     public bool isFront = true;
@@ -13,40 +16,40 @@ public class Card : MonoBehaviour
     public CardGame cardGame;
     public bool isMatched = false;
 
-    
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-       
-    }
 
     // Update is called once per frame
+    //&& = and || = or
+    // 0 => 180 => -180 => 0
+
+    //x<180
+    //
     void Update()
     {
-       
         
         float currentY = transform.eulerAngles.y;
-
 
         if (isFront)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, originRotation, rotateY * Time.deltaTime);
         }
+
         else
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, flipRotation, rotateY * Time.deltaTime);
-        }
-        
-        
-       
-    }
 
+        }
+            /*if (currentY < 180 && currentY >= 0)
+            {
+                transform.Rotate(0, rotateY, 0);
+            }
+            else if (isClick)
+            {
+                transform.Rotate(0, rotateY, 0);
+            }*/
+        }
     public void ClickCard()
     {
-        Debug.Log("Å¬¸¯µÊ");
-
-
         if (isMatched)
         {
 
@@ -54,16 +57,14 @@ public class Card : MonoBehaviour
         else
         {
             cardGame.OnClickCard(this);
-            
-            
         }
     }
+
 
     public void Flip(bool isFront)
     {
         this.isFront = isFront;
     }
-
 
     public void SetCardNumber(int newNumber)
     {
@@ -82,6 +83,5 @@ public class Card : MonoBehaviour
         GetComponent<Image>().sprite = sprite;
     }
 
+
 }
-
-
