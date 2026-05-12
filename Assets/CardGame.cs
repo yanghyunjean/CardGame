@@ -58,6 +58,8 @@ public class CardGame : MonoBehaviour
     //카드 섞고 다 뒤집기
     void startGame()
     {
+        SoundManager.Instance.PlayBGM();
+
         int totalCardCount = pairCount * 2;
         List<int> pairNumbers = GeneratePairNumbers(totalCardCount);
 
@@ -124,11 +126,13 @@ public class CardGame : MonoBehaviour
         {
             firstCard = card;
             firstCard.Flip(true);
+            SoundManager.Instance.PlaySoundFx();
         }
         else
         {
             SecondCard = card;
             SecondCard.Flip(true);
+            SoundManager.Instance.PlaySoundFx();
         }
         if (firstCard != null && SecondCard != null)
         {
